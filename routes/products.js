@@ -13,15 +13,4 @@ router.get('/', async (req, res) => {
     res.send(productsIndexTemplate({products}));
 });
 
-router.post('/cart/products/:id/add', async (req, res) => {
-    if(! req.session.cartId){
-        const cart = await cartRepository.create({products: []})
-        req.session.cartId = cart.id;
-    }
-    const productId = req.params.id;
-    const cartId = req.session.cartId;
-    await cartRepository.add(cartId, productId);
-    res.redirect('/')
-})
-
 module.exports = router;

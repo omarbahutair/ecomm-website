@@ -23,7 +23,7 @@ module.exports = class Repository{
     }
 
     async create(attrs){
-        attrs.id = attrs.id || this.randomId(); //to make the id what is given if it was provided
+        attrs.id = this.randomId();
         const records = await this.getAll();
         records.push(attrs);
         await this.writeAll(records)
