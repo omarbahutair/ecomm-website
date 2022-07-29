@@ -62,9 +62,9 @@ router.post(
     // get the user with the given email
     // set the req.session.userId to be the id of the founded record
     const { email, password } = req.body;
-    const user = await usersRepo.getOneBy({ email });
-    req.session.userId = user.id;
-    console.log(`${user.id} signed in`);
+    const user = await User.findOne({ email });
+    req.session.userId = user._id;
+    console.log(`${user._id} signed in`);
     return res.redirect("/admin/products");
   }
 );
