@@ -3,13 +3,13 @@ const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const mongoose = require("mongoose");
 
+const User = require("./model/user");
+const Cart = require("./model/cart");
+const Product = require("./model/product");
 const authRouter = require("./routes/admin/auth");
 const adminProductsRouter = require("./routes/admin/products");
 const productsRouter = require("./routes/products");
 const cartRouter = require("./routes/carts");
-const User = require("./model/user");
-const Cart = require("./model/cart");
-const Product = require("./model/product");
 
 mongoose.connect("mongodb://localhost/ecomm");
 

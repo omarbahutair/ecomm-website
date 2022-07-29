@@ -1,4 +1,7 @@
 const { check } = require("express-validator");
+const mongoose = require("mongoose");
+
+const User = mongoose.model("user");
 const usersRepo = require("../../repositories/usersRepository");
 
 module.exports = {
@@ -21,7 +24,7 @@ module.exports = {
     .custom(async (email) => {
       // get a user from the database by its email
       // if the user exist thow an error
-      const existingUser = await usersRepo.getOneBy({ email });
+      const existingUser = await User.findOne({ email });
       if (existingUser) {
         throw new Error("Email is used");
       }
@@ -55,7 +58,7 @@ module.exports = {
     .withMessage("Must provide a valid email")
     .custom(async (email) => {
       // get a user from the database if the user does not exist throw an error
-      if (!(await usersRepo.getOneBy({ email }))) {
+      if (!(await User.findOne({ email }))) {
         throw new Error("Email not found");
       }
     }),
