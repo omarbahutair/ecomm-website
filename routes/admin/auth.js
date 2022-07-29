@@ -1,7 +1,10 @@
 const express = require("express");
+const mongoose = require("mongoose");
+
 const usersRepo = require("../../repositories/usersRepository");
 const signupTemplate = require("../../views/admin/auth/signup");
 const signinTemplate = require("../../views/admin/auth/signin");
+const { hashPassword } = require("./helpers");
 const {
   requireEmail,
   requirePassword,
@@ -10,6 +13,8 @@ const {
   incorrectPassword,
 } = require("./validators");
 const { handleErrors } = require("./middlewares");
+
+const User = mongoose.model("user");
 
 const router = express.Router();
 
@@ -24,13 +29,15 @@ router.post(
   async (req, res) => {
     // create user in the database
     // set the req.session.userId to be the id of the user
-    const user = await usersRepo.create({
+    req.body.password = await hashPassword(req.body.password);
+    const user = new User({
       email: req.body.email,
       password: req.body.password,
     });
 
-    req.session.userId = user.id;
+    await user.save();
 
+    req.session.userId = user._id;
     res.redirect("/admin/products");
   }
 );
